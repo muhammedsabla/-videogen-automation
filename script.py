@@ -6,56 +6,45 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 import time
 
-# مسار ChromeDriver
-driver_path = "/path/to/chromedriver"  # قم بتحديث المسار حسب موقع ChromeDriver
+driver_path = "/path/to/chromedriver"  # Update the path to ChromeDriver
 
-# إعداد خيارات المتصفح
 chrome_options = Options()
-chrome_options.add_argument("--start-maximized")  # فتح المتصفح بحجم كامل
-chrome_options.add_argument("--headless")  # تشغيل المتصفح في الوضع الصامت (اختياري)
+chrome_options.add_argument("--start-maximized")  # Open browser in full screen
+chrome_options.add_argument("--headless")  # Run browser in headless mode (optional)
 chrome_options.add_experimental_option("prefs", {
-    "download.default_directory": "/path/to/download/folder",  # تحديد مجلد التنزيل
-    "download.prompt_for_download": False,  # تعطيل提示 التنزيل
+    "download.default_directory": "/path/to/download/folder",  # Set download folder
+    "download.prompt_for_download": False,
     "download.directory_upgrade": True,
     "safebrowsing.enabled": True
 })
 
-# تهيئة WebDriver
 service = Service(driver_path)
 driver = webdriver.Chrome(service=service, options=chrome_options)
 
 try:
-    # فتح موقع videogen.ai
     driver.get("https://videogen.ai")
 
-    # انتظار تحميل الصفحة
     WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.TAG_NAME, "body"))
     )
 
-    # النقر على زر "إنشاء فيديو"
     create_button = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.XPATH, "//button[contains(text(),'Create Video')]"))
     )
     create_button.click()
 
-    # انتظار اكتمال إنشاء الفيديو
     WebDriverWait(driver, 30).until(
         EC.presence_of_element_located((By.XPATH, "//button[contains(text(),'Download')]"))
     )
 
-    # النقر على زر "تنزيل"
     download_button = driver.find_element(By.XPATH, "//button[contains(text(),'Download')]")
     download_button.click()
 
-    # انتظار بدء التنزيل
-    time.sleep(5)  # يمكن استبدالها بانتظار أكثر ذكاءً
-
-    print("تم تنزيل الفيديو بنجاح!")
+    time.sleep(5)
+    print("Video downloaded successfully!")
 
 except Exception as e:
-    print(f"حدث خطأ: {e}")
+    print(f"Error: {e}")
 
 finally:
-    # إغلاق المتصفح
     driver.quit()
