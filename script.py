@@ -6,13 +6,13 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 import time
 
-driver_path = "/path/to/chromedriver"  # Update the path to ChromeDriver
+driver_path = "/path/to/chromedriver"  
 
 chrome_options = Options()
-chrome_options.add_argument("--start-maximized")  # Open browser in full screen
-chrome_options.add_argument("--headless")  # Run browser in headless mode (optional)
+chrome_options.add_argument("--start-maximized")  
+chrome_options.add_argument("--headless")  
 chrome_options.add_experimental_option("prefs", {
-    "download.default_directory": "/path/to/download/folder",  # Set download folder
+    "download.default_directory": "/path/to/download/folder", 
     "download.prompt_for_download": False,
     "download.directory_upgrade": True,
     "safebrowsing.enabled": True
